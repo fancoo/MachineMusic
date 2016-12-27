@@ -1,0 +1,11 @@
+[INFO][2016-12-26 15:40:58][bin\format_data.py:45]read <907269> login users from file <../raw/login_feature.txt>, use time: 111.15 secs
+[INFO][2016-12-26 15:45:45][bin\format_data.py:73]read <228162> invite users from file <../raw/invite_feature.txt>, use time: 287.43 secs
+[INFO][2016-12-26 15:49:40][bin\format_data.py:92]read <282828> chat users from file <../raw/chat_feature.txt>, use time: 235.08 secs
+[INFO][2016-12-26 15:51:38][bin\format_data.py:109]read <5948716> register users from file <../raw/user_register.txt>, use time: 117.99 secs
+[INFO][2016-12-26 15:51:39][bin\format_data.py:127]select user whose invite_no > 0 or chat_no > 0, use time: 0.43 secs
+[INFO][2016-12-26 15:59:17][bin\format_data.py:45]read <907269> login users from file <../raw/login_feature.txt>, use time: 110.23 secs
+[INFO][2016-12-26 16:03:41][bin\format_data.py:73]read <228162> invite users from file <../raw/invite_feature.txt>, use time: 263.84 secs
+[INFO][2016-12-26 16:07:32][bin\format_data.py:92]read <282828> chat users from file <../raw/chat_feature.txt>, use time: 231.05 secs
+[INFO][2016-12-26 16:09:38][bin\format_data.py:109]read <5948716> register users from file <../raw/user_register.txt>, use time: 125.96 secs
+[INFO][2016-12-26 16:09:39][bin\format_data.py:127]select user whose invite_no > 0 or chat_no > 0, use time: 0.44 secs
+[INFO][2016-12-26 16:12:17][E:/CodeAfter0704/Search/ModelBased/bin/user_corpus.py:112]create train corpus finished: <1601044> samples, <306594> users, <60> days, uses time: 158.76 secs
