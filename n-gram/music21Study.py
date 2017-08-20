@@ -29,13 +29,15 @@ print f4.pitch.frequency
 bflat = note.Note("B-2")
 print bflat.pitch.frequency
 
+notes_file = open('oscar2ngrams.txt', 'r')
+
 s = stream.Part()
-for i in [8,6,7,5,3,0,9,  8,6,7,5,3,0,9]:
-    n = note.Note(i)
-    if i == 3:
-        n.quarterLength = .5
-    elif i == 9:
-        n.quarterLength = 2.5
-    n.quarterLength *= .5
+for line in notes_file:
+    toks = line.strip().split(',')
+    print toks
+    tone = toks[0]
+    offset = float(toks[1])
+    n = note.Note(nameWithOctave=tone, quarterLength=offset)
     s.append(n)
-s.show('midi')
+notes_file.close()
+s.write('midi', 'study.mid')
