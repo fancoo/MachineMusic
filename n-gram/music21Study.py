@@ -25,19 +25,30 @@ print f.octave
 print f.pitch.frequency
 print f4.pitch.frequency
 
-# flats use '-' and sharps use '#'
-bflat = note.Note("B-2")
-print bflat.pitch.frequency
+# # flats use '-' and sharps use '#'
+# bflat = note.Note("B-2")
+# print bflat.pitch.frequency
 
-notes_file = open('oscar2ngrams.txt', 'r')
+# print origin notes
+import pandas as pd
+oscar = pd.read_csv('../midi/oscar2notes.txt', skiprows=2)[:].sort_values(by="Offset")
+oscar.index = xrange(1, len(oscar) + 1)
+
+
+def deal(string):
+    if '/' not in string:
+        return float(string)
+    elements = string.split('/')
+    return float(elements[0]) / float(elements[1])
 
 s = stream.Part()
-for line in notes_file:
-    toks = line.strip().split(',')
-    print toks
-    tone = toks[0]
-    offset = float(toks[1])
-    n = note.Note(nameWithOctave=tone, quarterLength=offset)
+
+for row in oscar.iterrows():
+    tone = row[1]['Note/Rest'] +  str(row[1]['Octave'])
+    length = row[1]['Len']
+    length = deal(length)
+    n = note.Note(nameWithOctave=tone, quarterLength=length)
     s.append(n)
-notes_file.close()
+
+
 s.write('midi', 'study.mid')

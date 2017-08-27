@@ -7,11 +7,13 @@ import pandas as pd
 import copy
 import numpy as np
 import sys
+from music21 import *
+
 
 
 oscar2 = pd.read_csv('../midi/oscar2notes.txt', skiprows=2)[:].sort_values(by="Offset")
 oscar2.index = xrange(1, len(oscar2) + 1)
-oscar2 = oscar2[oscar2.Octave >= 4]
+# oscar2 = oscar2[oscar2.Octave >= 4]
 """
 with open('../midi/oscar2notes.txt', 'rb') as f:
     metmark = float(f.readline())
@@ -93,6 +95,7 @@ def yieldNext(prevnnexts, *args):
     nextnotes = nexts[:, 0]
     probabilities = nexts[:, 1]
 
+    '''
     # remove possibility of >= 3 notes in row for trigram model
     if len(set(args)) == 1:  # if prev notes = all same
         ixToDel = []
@@ -101,9 +104,9 @@ def yieldNext(prevnnexts, *args):
                 ixToDel.append(ix)
         nextnotes = np.delete(nextnotes, ixToDel)
         probabilities = np.delete(probabilities, ixToDel)
-
+    '''
     # Also to consider: remove notes in nextnotes if jump from octave 4 to 6 etc.
-    totalprob = 0;  # assert is normalized
+    totalprob = 0  # assert is normalized
     for p in probabilities: totalprob += float(p)
     if totalprob != 1.0: probabilities = normList(probabilities)
     return np.random.choice(nextnotes, p=probabilities)
@@ -296,9 +299,9 @@ while numberGenerated != numberofngrams:  # remove while if decide to rm. duplic
 
 # Prune. Experiment with which to use, to see how close is to Oscar's style.
 gennotes = smoothen(gennotes)
-gennotes = rmDuplicates(gennotes)
+# gennotes = rmDuplicates(gennotes)
 gennotes = rmSingles(gennotes)
-gennotes = rmDuplicates(gennotes)
+# gennotes = rmDuplicates(gennotes)
 
 # Assert that you got the right # of notes.
 print "# of notes generated after pruning: %s" % len(gennotes)
@@ -308,3 +311,18 @@ print "# of notes generated after pruning: %s" % len(gennotes)
 with open("oscar2ngrams.txt", 'wb') as f:
     for note, length in zip(gennotes, genoffsets):
         f.write("%s,%s\n" % (note, length))
+
+# Save to midi
+notes_file = open('oscar2ngrams.txt', 'r')
+
+from music21 import note
+s = stream.Part()
+for line in notes_file:
+    toks = line.strip().split(',')
+    # print toks
+    tone = toks[0]
+    offset = float(toks[1])
+    n = note.Note(nameWithOctave=tone, quarterLength=offset, offset=offset)
+    s.append(n)
+notes_file.close()
+s.write('midi', 'study1.mid')
